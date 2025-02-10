@@ -6,7 +6,7 @@ services:
       - "8443:443"
     networks:
       - inception_network
-    depndss_on:
+    depends_on:
       - wordpress
       - mariadb
     restart: always
@@ -24,17 +24,17 @@ services:
     - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
     restart: always
 
-  madiadb:
+  mariadb:
     build: ./mariadb
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
       - inception_network
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORDD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYQL_PASSWORD}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     restart: always
 
 volumes:

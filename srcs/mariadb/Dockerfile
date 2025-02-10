@@ -1,5 +1,4 @@
-FROM debian:buster
-RUN apt update && apt install -y mariadb-server
+FROM mariadb:10.5
 COPY ./my.cnf /etc/mysql/my.cnf
 EXPOSE 3306
 CMD ["mysqld"]

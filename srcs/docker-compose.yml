@@ -14,18 +14,18 @@ services:
   wordpress:
     build: ./wordpress
     volumes:
-    - wordpress_data:/var/www/html
+      - wordpress_data:/var/www/html
     networks:
-    - inception_network
+      - inception_network
     environment:
-    - WORDPRESS_DB_HOST=mariadb
-    - WORDPRESS_DB_USER=${MYSQL_USER}
-    - WORDPRESS_DB_PASSWORD=${MYSQL_PASSWORD}
-    - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
+      - WORDPRESS_DB_HOST=mariadb
+      - WORDPRESS_DB_USER=${MYSQL_USER}
+      - WORDPRESS_DB_PASSWORD=${MYSQL_PASSWORD}
+      - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
     restart: always
 
   mariadb:
-    build: ./mariadb
+    image: mariadb:10.5
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:

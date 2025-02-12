@@ -1,4 +1,4 @@
-FROM mariadb:10.5
+FROM debian:buster
 COPY ./my.cnf /etc/mysql/my.cnf
 EXPOSE 3306
 CMD ["mysqld"]

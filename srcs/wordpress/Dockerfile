@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM alpine:3.16
 
 RUN apt update && apt install -y \
 php-fpm \

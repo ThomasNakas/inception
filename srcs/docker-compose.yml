@@ -25,7 +25,7 @@ services:
     restart: always
 
   mariadb:
-    image: mariadb:10.5
+    image: ./mariadb
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:

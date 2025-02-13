@@ -10,15 +10,18 @@ services:
     volumes:
       - ${HOME}/data/mariadb/:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=${WP_DB_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${WP_DB_DATABASE}
-      - MYSQL_USER=${WP_DB_USER}
-      - MYSQL_PASSWORD=${WP_DB_PASSWORD}
-      - SECURE_ADMIN_PASSWORD=${SECURE_ADMIN_PASSWORD}
-      - SECURE_EDITOR_PASSWORD=${SECURE_EDITOR_PASSWORD}
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD_FILE=/run/secrets/mysql_password
+      - SECURE_ADMIN_PASSWORD_FILE=/run/secrets/admin_password
+      - SECURE_EDITOR_PASSWORD_FILE=/run/secrets/editor_password
     secrets:
-      - db_root_password
-      - db_password
+      - mysql_root_password
+      - mysql_password
+      - admin_password
+      - editor_password
+
   wordpress:
     build: ./requirements/wordpress
     container_name: wordpress
@@ -30,12 +33,12 @@ services:
     volumes:
       - ${HOME}/data/wordpress:/var/www/html
     environment:
-      - WORDPRESS_DB_HOST=mariadb
-      - WORDPRESS_DB_NAME=${WORDPRESS_DB_NAME}
-      - WORDPRESS_DB_USER=${WORDPRESS_DB_USER}
-      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      - WORDPRESS_DB_HOST=maria_db
+      - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
+      - WORDPRESS_DB_USER=${MYSQL_USER}
+      - WORDPRESS_DB_PASSWORD_FILE=/run/secrets/mysql_password
     secrets:
-      - db_password
+      - mysql_password
   nginx:
     build:  ./requirements/nginx
     container_name: nginx
@@ -51,3 +54,13 @@ services:
       - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
 networks:
   inception:
+    driver: bridge
+secrets:
+  db_root_password:
+    file: ./secrets/db_root_password.txt
+  db_password:
+    file: ./secrets/db_password.txt
+  admin_password:
+    file: ./secrets/admin_password.txt
+  editor_password:
+    file: ./secrets/editor_password.txt

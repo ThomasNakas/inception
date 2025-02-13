@@ -1,0 +1,10 @@
+.env
+secrets/
+srcs/data
+
+docker-compose.override.yml
+**/.DS_Store
+**/ssl/*.key
+**/ssl/*.pem
+
+*.log

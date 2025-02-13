@@ -10,10 +10,12 @@ services:
     volumes:
       - ${HOME}/data/mariadb/:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${WP_DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${WP_DB_DATABASE}
+      - MYSQL_USER=${WP_DB_USER}
+      - MYSQL_PASSWORD=${WP_DB_PASSWORD}
+      - SECURE_ADMIN_PASSWORD=${SECURE_ADMIN_PASSWORD}
+      - SECURE_EDITOR_PASSWORD=${SECURE_EDITOR_PASSWORD}
     secrets:
       - db_root_password
       - db_password

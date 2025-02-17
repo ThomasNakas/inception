@@ -6,7 +6,7 @@ setup:
 	sudo chown -R 1001:1001 /home/tnakas/data/mariadb
 	sudo chmod -R 750 /home/tnakas/data/mariadb
 	sudo chown -R 1001:1001 /home/tnakas/data/wordpress
-    sudo chmod -R 750 /home/tnakas/data/wordpress
+	sudo chmod -R 750 /home/tnakas/data/wordpress
 build:
 	docker compose -f srcs/docker-compose.yml build
 up:

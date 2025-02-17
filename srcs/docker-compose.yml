@@ -75,3 +75,10 @@ secrets:
 # volumes:
 #   mariadb_data:
 #   wp_data:
+
+# =========// stackoverflow command for the director tree //=============
+# find . -path './.git' -prune -o -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'
+# secrets
+# echo "L3@rneradmin" > admin_password.txt && echo "L3@rnereditor" > editor_password.txt && echo "L3@rnerdb" > mysql_password.txt && echo "L3@rnerRoot" > mysql_root_password.txt
+# .env
+# echo -e "MYSQL_DATABASE=wp_db\nMYSQL_USER=wp_user\nMYSQL_PASSWORD=L3@rnerdb\nMYSQL_ROOT_PASSWORD=L3@rnerroot\nWP_DB_HOST=maria_db\nWP_DB_CHARSET=utf8mb4\nSECURE_ADMIN_PASSWORD=L3@rneradmin\nSECURE_EDITOR_PASSWORD=L3@rnereditor" > .env

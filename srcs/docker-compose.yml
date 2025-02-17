@@ -8,7 +8,7 @@ services:
       - inception
     restart: unless-stopped
     volumes:
-      - ${HOME}/data/mariadb/:/var/lib/mysql
+      - /home/tnakas/data/mariadb/:/var/lib/mysql
     # volumes:
     #   - mariadb_data:/var/lib/mysql
     environment:
@@ -33,7 +33,7 @@ services:
       - mariadb
     restart: unless-stopped
     volumes:
-      - ${HOME}/data/wordpress:/var/www/html
+      - /home/tnakas/data/wordpress:/var/www/html
     # I should comment this when I am in VM
     # volumes:
     #   - wp_data:/var/www/html
@@ -55,7 +55,7 @@ services:
       - wordpress
     restart: unless-stopped
     volumes:
-      - ${HOME}/data/wordpress:/var/www/html
+      - /home/tnakas/data/wordpress:/var/www/html
       # I should comment this when I am in VM
       # - wp_data:/var/www/html
       # - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
@@ -64,13 +64,13 @@ networks:
     driver: bridge
 secrets:
   mysql_root_password:
-    file: ../secrets/mysql_root_password.txt
+    file: ./secrets/mysql_root_password.txt
   mysql_password:
-    file: ../secrets/mysql_password.txt
+    file: ./secrets/mysql_password.txt
   admin_password:
-    file: ../secrets/admin_password.txt
+    file: ./secrets/admin_password.txt
   editor_password:
-    file: ../secrets/editor_password.txt
+    file: ./secrets/editor_password.txt
 # I should comment this when I am in VM
 # volumes:
 #   mariadb_data:

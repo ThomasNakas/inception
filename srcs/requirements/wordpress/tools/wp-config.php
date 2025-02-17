@@ -1,10 +1,10 @@
 <?php
 
-define('DB_NAME', 'wp_db');
-define('DB_USER', 'wp_user');
+define('DB_NAME', getenv('MYSQL_DATABASE'));
+define('DB_USER', getenv('MYSQL_USER'));
 define('DB_PASSWORD', file_get_contents('/run/secrets/mysql_password'));
-define('DB_HOST', 'mariadb');
-define('DB_CHARSET', 'utf8mb4');
+define('DB_HOST', getenv('WP_DB_HOST'));
+define('DB_CHARSET', getenv('WP_DB_CHARSET'));
 define('DB_COLLATE', '');
 
 $table_prefix = 'wp_';

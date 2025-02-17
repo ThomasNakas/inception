@@ -38,7 +38,7 @@ services:
     volumes:
       - wp_data:/var/www/html
     environment:
-      - WORDPRESS_DB_HOST=maria_db
+      - WORDPRESS_DB_HOST=${WP_DB_HOST}
       - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
       - WORDPRESS_DB_USER=${MYSQL_USER}
       - WORDPRESS_DB_PASSWORD_FILE=/run/secrets/mysql_password
@@ -65,13 +65,13 @@ networks:
     driver: bridge
 secrets:
   mysql_root_password:
-    file: ./secrets/mysql_root_password.txt
+    file: ../secrets/mysql_root_password.txt
   mysql_password:
-    file: ./secrets/mysql_password.txt
+    file: ../secrets/mysql_password.txt
   admin_password:
-    file: ./secrets/admin_password.txt
+    file: ../secrets/admin_password.txt
   editor_password:
-    file: ./secrets/editor_password.txt
+    file: ../secrets/editor_password.txt
 # I should comment this when I am in VM
 volumes:
   mariadb_data:

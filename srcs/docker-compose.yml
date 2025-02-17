@@ -7,10 +7,10 @@ services:
     networks:
       - inception
     restart: unless-stopped
-    # volumes:
-    #   - ${HOME}/data/mariadb/:/var/lib/mysql
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - ${HOME}/data/mariadb/:/var/lib/mysql
+    # volumes:
+    #   - mariadb_data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -32,11 +32,11 @@ services:
     depends_on:
       - mariadb
     restart: unless-stopped
-    # volumes:
-    #   - ${HOME}/data/wordpress:/var/www/html
-    # I should comment this when I am in VM
     volumes:
-      - wp_data:/var/www/html
+      - ${HOME}/data/wordpress:/var/www/html
+    # I should comment this when I am in VM
+    # volumes:
+    #   - wp_data:/var/www/html
     environment:
       - WORDPRESS_DB_HOST=${WP_DB_HOST}
       - WORDPRESS_DB_NAME=${MYSQL_DATABASE}
@@ -55,11 +55,10 @@ services:
       - wordpress
     restart: unless-stopped
     volumes:
-
-      # - ${HOME}/data/wordpress:/var/www/html
+      - ${HOME}/data/wordpress:/var/www/html
       # I should comment this when I am in VM
-      - wp_data:/var/www/html
-      - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
+      # - wp_data:/var/www/html
+      # - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
 networks:
   inception:
     driver: bridge
@@ -73,6 +72,6 @@ secrets:
   editor_password:
     file: ../secrets/editor_password.txt
 # I should comment this when I am in VM
-volumes:
-  mariadb_data:
-  wp_data:
+# volumes:
+#   mariadb_data:
+#   wp_data:

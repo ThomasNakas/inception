@@ -4,6 +4,7 @@ services:
   mariadb:
     build: ./requirements/mariadb
     container_name: maria_db
+    user : "1001:1001"
     networks:
       - inception
     restart: unless-stopped
@@ -17,12 +18,10 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD_FILE=/run/secrets/mysql_password
       - SECURE_ADMIN_PASSWORD_FILE=/run/secrets/admin_password
-      - SECURE_EDITOR_PASSWORD_FILE=/run/secrets/editor_password
     secrets:
       - mysql_root_password
       - mysql_password
       - admin_password
-      - editor_password
 
   wordpress:
     build: ./requirements/wordpress
@@ -56,6 +55,7 @@ services:
     restart: unless-stopped
     volumes:
       - /home/tnakas/data/wordpress:/var/www/html
+      - ./requirements/nginx/conf:/etc/nginx/conf.d
       # I should comment this when I am in VM
       # - wp_data:/var/www/html
       # - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
@@ -69,8 +69,6 @@ secrets:
     file: ../secrets/mysql_password.txt
   admin_password:
     file: ../secrets/admin_password.txt
-  editor_password:
-    file: ../secrets/editor_password.txt
 # I should comment this when I am in VM
 # volumes:
 #   mariadb_data:

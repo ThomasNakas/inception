@@ -1,19 +1,25 @@
 NAME = inception
 
-all: build up
+all: setup build up
 
+setup:
+	sudo chown -R 1001:1001 /home/tnakas/data/mariadb
+    sudo chmod -R 750 /home/tnakas/data/mariadb
+	sudo chown -R 1001:1001 /home/tnakas/data/wordpress
+    sudo chmod -R 750 /home/tnakas/data/wordpress
 build:
-	@docker-compose -f srcs/docker-compose.yml build
+	docker compose -f srcs/docker-compose.yml build
 up:
-	@docker-compose -f srcs/docker-compose.yml up --detach
+	docker compose -f srcs/docker-compose.yml up --detach
 down:
-	@docker-compose -f srcs/docker-compose.yml down
+	docker compose -f srcs/docker-compose.yml down
 clean: down
+	docker compose -f srcs/docker-compose.yml down -v
 
 fclean: clean
 		@docker system prune -a --force
-		@rm -rf ${HOME}/data/wordpress/*
-		@rm -rf ${HOME}/data/mariadb/*
+		sudo rm -rf /home/tnakas/data/wordpress/*
+		sudo rm -rf /home/tnakas/data/mariadb/*
 re: fclean all
 
-.PHONY: all build up down clean fclean re
+.PHONY: all build up down clean fclean re setup

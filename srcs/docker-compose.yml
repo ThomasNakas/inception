@@ -2,7 +2,6 @@ services:
   mariadb:
     build: ./requirements/mariadb
     container_name: maria_db
-    user : "1001:1001"
     networks:
       - inception
     restart: unless-stopped

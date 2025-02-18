@@ -67,9 +67,9 @@ secrets:
   admin_password:
     file: ../secrets/admin_password.txt
 # I should comment this when I am in VM
-volumes:
-  mariadb_data:
-  wp_data:
+# volumes:
+#   mariadb_data:
+#   wp_data:
 
 # =========// stackoverflow command for the director tree //=============
 # find . -path './.git' -prune -o -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'

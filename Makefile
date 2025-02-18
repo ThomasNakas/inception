@@ -13,12 +13,12 @@ up:
 	docker compose -f srcs/docker-compose.yml up --detach
 down:
 	docker compose -f srcs/docker-compose.yml down
-clean: down \
+clean: down
 	docker compose -f srcs/docker-compose.yml down -v
 
-fclean: clean \
-		@docker system prune -a --force \
-		sudo rm -rf /home/tnakas/data/wordpress/* \
+fclean: clean
+		@docker system prune -a --force
+		sudo rm -rf /home/tnakas/data/wordpress/*
 		sudo rm -rf /home/tnakas/data/mariadb/*
 re: fclean all
 

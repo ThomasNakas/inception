@@ -16,5 +16,11 @@
 # CMD ["nginx", "-g", "daemon off;"]
 FROM debian:latest
 
-RUN apt update && apt upgrade && apt install -y nginx
+RUN apt update && \
+	apt upgrade -y && \
+	apt install -y nginx && \
+	apt clean && \
+	rm -rf /var/lib/apt/lists/*
+COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
+
 CMD ["nginx", "-g", "daemon off;"]

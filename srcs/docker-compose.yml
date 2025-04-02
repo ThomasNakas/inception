@@ -53,6 +53,7 @@ services:
     volumes:
       - /home/tnakas/data/wordpress:/var/www/html
       - ./requirements/nginx/conf:/etc/nginx/conf.d
+      - ./requirements/nginx/tools/ssl:/etc/nginx/ssl
       # I should comment this when I am in VM
       # - wp_data:/var/www/html
       # - ./requirements/nginx/tools/ssl:/etc/nginx/ssl

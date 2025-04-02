@@ -6,5 +6,5 @@ docker-compose.override.yml
 **/.DS_Store
 # **/ssl/*.key
 # **/ssl/*.pem
-
+*push_*
 *.log

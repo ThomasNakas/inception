@@ -1,28 +1,23 @@
-FROM debian:buster
+FROM debian:bullseye
 
-RUN apt update && apt install -y \
-	php-fpm \
-	php-mysql \
-	php-curl \
-	php-gd \
-	php-mbstring \
-	php-xml \
-	php-xmlrpc \
-	php-soap \
-	php-intl \
-	php-zip \
-	wget \
-	&& rm -rf /var/lib/apt/lists/*
-# RUN mkdir -p /var/www/html
-# RUN wget https://wordpress.org/latest.tar.gz && \
-# 	tar -xzf latest.tar.gz && \
-# 	rm latest.tar.gz && \
-# 	mv wordpress /var/www/html
-# RUN chown -R www-data:www-data /var/www/html
-# RUN mkdir -p /run/php && chown -R www-data:www-data /run/php
-# COPY conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
-# COPY tools/wp-config.php /var/www/html/wp-config.php
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt update && \
+	apt upgrade -y && \ 
+	apt install -y \
+	php7.4-fpm php7.4-mysql curl wget unzip mariadb-client && \
+	rm -rf /var/lib/apt/lists/*
 
-# EXPOSE 9000
+RUN wget https://wordpress.org/latest.tar.gz && \
+	tar -xzf latest.tar.gz && \
+	ls -l && \
+	mkdir -p /var/www/html && \
+	mv wordpress/* /var/www/html && \
+	rm latest.tar.gz
 
-CMD ["php-fpm7.3", "-F"]
+RUN mkdir -p /run/php
+
+RUN chown -R www-data:www-data /var/www/html
+COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
+WORKDIR /var/www/html
+
+CMD ["php-fpm7.4", "-F"]

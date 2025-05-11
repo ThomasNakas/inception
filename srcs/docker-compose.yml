@@ -5,4 +5,81 @@ services:
     build: requirements/nginx/.
     container_name: nginx
     ports:
-    - "80:80"
+    - "443:443"
+    networks:
+    - inception
+    volumes:
+    - web:/var/www/html
+  wordpress:
+   build: requirements/wordpress/.
+   container_name: wp-php
+   expose:
+    - "9000"
+   environment:
+    WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+    WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+    WORDPRESS_DB_PASSWORD: /run/secrets/wordpress_db_password
+    WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+   healthcheck:
+      test: ["CMD", "curl", "-f", "https://tnakas.42.fr:9000"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+   networks:
+    - inception
+   volumes:
+    - web:/var/www/html
+  mariadb:
+   image: mariadb:10.5
+   container_name: db
+   environment:
+    MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_password
+    MYSQL_DATABASE: ${MYSQL_DATABASE}
+    MYSQL_USER: ${MYSQL_USER}
+    MYSQL_PASSWORD: /run/secrets/mysql_password
+   networks:
+    - inception
+   volumes:
+    - db_data:/var/lib/mysql
+secrets:
+  mysql_password:
+   file: ../secrets/mysql_password.txt
+  mysql_root_password:
+   file: ../secrets/mysql_root_password.txt
+  wordpress_db_password:
+   file: ../secrets/wordpress_db_password.txt
+networks:
+  inception:
+    driver: bridge
+volumes:
+  web:
+  db_data:
+
+#   nginx:
+#     build: ./requirements/nginx
+#     ports:
+#       - "443:443"
+#     depends_on:
+#       - wordpress
+#   wordpress:
+#     image: wordpress
+#     ports:
+#      - "9000:80"
+#     environment:
+#      WORDPRESS_DB_HOST: db
+#      WORDPRESS_DB_USER: user
+#      WORDPRESS_DB_PASSWORD: password
+#      WORDPRESS_DB_NAME: wordpress
+#     depends_on:
+#      - db
+#   db:
+#     image: mariadb
+#     environment:
+#      MYSQL_ROOT_PASSWORD: password
+#      MYSQL_DATABASE: wordpress
+#      MYSQL_USER: user
+#      MYSQL_PASSWORD: password
+#     volumes:
+#      - db:/var/lib/mysql
+# volumes:
+#  db:

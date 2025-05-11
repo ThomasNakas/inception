@@ -18,8 +18,10 @@ services:
    environment:
     WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
     WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-    WORDPRESS_DB_PASSWORD: /run/secrets/wordpress_db_password
+    WORDPRESS_DB_PASSWORD_FILE: /run/secrets/wordpress_db_password
     WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+   secrets:
+    - wordpress_db_password
    healthcheck:
       test: ["CMD", "curl", "-f", "https://tnakas.42.fr:9000"]
       interval: 10s
@@ -33,10 +35,13 @@ services:
    image: mariadb:10.5
    container_name: db
    environment:
-    MYSQL_ROOT_PASSWORD: /run/secrets/mysql_root_password
+    MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
     MYSQL_DATABASE: ${MYSQL_DATABASE}
     MYSQL_USER: ${MYSQL_USER}
-    MYSQL_PASSWORD: /run/secrets/mysql_password
+    MYSQL_PASSWORD_FILE: /run/secrets/mysql_password
+   secrets:
+   - mysql_root_password
+   - mysql_password
    networks:
     - inception
    volumes:

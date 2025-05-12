@@ -4,7 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt update && \
 	apt upgrade -y && \ 
 	apt install -y \
-	php7.4-fpm php7.4-mysql curl wget unzip mariadb-client && \
+	php7.4-fpm php7.4-mysql php7.4-mysqli curl wget unzip mariadb-client && \
 	rm -rf /var/lib/apt/lists/*
 
 RUN wget https://wordpress.org/latest.tar.gz && \
@@ -20,4 +20,7 @@ RUN chown -R www-data:www-data /var/www/html
 COPY www.conf /etc/php/7.4/fpm/pool.d/www.conf
 WORKDIR /var/www/html
 
-CMD ["php-fpm7.4", "-F"]
+COPY ./tools/docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["docker-entrypoint.sh"]
+# CMD ["php-fpm7.4", "-F"]

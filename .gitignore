@@ -7,4 +7,5 @@ docker-compose.override.yml
 # **/ssl/*.key
 # **/ssl/*.pem
 *push_*
+*test*
 *.log

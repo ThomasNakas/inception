@@ -1,5 +1,5 @@
-# .env
-# **/secrets
+.env
+**/secrets
 srcs/data
 
 docker-compose.override.yml

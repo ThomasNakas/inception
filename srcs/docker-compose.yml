@@ -17,13 +17,17 @@ services:
     - "9000"
    environment:
     WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
-    WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-    WORDPRESS_DB_PASSWORD_FILE: /run/secrets/wordpress_db_password
+    WORDPRESS_DB_PORT: ${WORDPRESS_DB_PORT}
+    WORDPRESS_ROOT: ${WORDPRESS_ROOT}
+    WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
+    WORDPRESS_USER: ${WORDPRESS_USER}
+    WORDPRESS_WEBSITE: ${WORDPRESS_WEBSITE}
     WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+    WORDPRESS_DB_PASSWORD_FILE: /run/secrets/wordpress_db_password
    secrets:
     - wordpress_db_password
    healthcheck:
-      test: ["CMD", "curl", "-f", "https://tnakas.42.fr:9000"]
+      test: curl -f "${WORDPRESS_WEBSITE}:9000" || exit 1
       interval: 10s
       timeout: 5s
       retries: 3
@@ -34,7 +38,6 @@ services:
   mariadb:
    build: requirements/mariadb/.
 #    image: mariadb:10.5
-   container_name: db
    environment:
     MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
     MYSQL_DATABASE: ${MYSQL_DATABASE}

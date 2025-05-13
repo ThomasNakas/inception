@@ -8,7 +8,7 @@ export MYSQL_DATABASE=${MYSQL_DATABASE}
 export MYSQL_ROOT_USER=${MYSQL_ROOT_USER}
 export MYSQL_USER=${MYSQL_USER}
 # Fill in the SQL with actual env values
-cat <<EOF > /tmp/init.sql
+cat <<EOF > /etc/mysql/init.sql
 CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Super user
@@ -21,6 +21,5 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON \`${MYSQL_DATABASE}\`.* TO '${MYSQL_USER
 
 FLUSH PRIVILEGES;
 EOF
-
 # Run the SQL script
-exec mariadbd --init-file=/tmp/init.sql
+exec mariadbd --init-file=/etc/mysql/init.sql --user=mysql

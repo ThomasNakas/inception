@@ -1,27 +1,43 @@
 NAME = inception
 
 LOGIN = tnakas
+COMPOSE_PATH = srcs/docker-compose.yml
+SERVICE = mariadb
 all: setup build up
 
 setup:
 		@mkdir -p /home/${LOGIN}/data
 		@mkdir -p /home/${LOGIN}/data/mariadb
 		@mkdir -p /home/${LOGIN}/data/wordpress
-		# @chown -R 999:999 /home/${LOGIN}/data/mariadb
-		# @chown -R 33:33 /home/${LOGIN}/data/wordpress
+
 build:
-	docker compose -f srcs/docker-compose.yml build
+	docker compose -f ${COMPOSE_PATH} build
+
 up:
-	docker compose -f srcs/docker-compose.yml up --detach
+	docker compose -f ${COMPOSE_PATH} up --detach
+
 down:
-	docker compose -f srcs/docker-compose.yml down
+	docker compose -f ${COMPOSE_PATH} down
+
+inspect:
+	docker compose  -f ${COMPOSE_PATH} logs
+
+ps:
+	docker compose  -f ${COMPOSE_PATH} ps
+
+bash: 
+	docker compose -f ${COMPOSE_PATH} exec  -it ${SERVICE} bash
+
 clean:
-	docker compose -f srcs/docker-compose.yml down -v
+	docker compose -f ${COMPOSE_PATH} down -v
 	-rm -rf /home/tnakas/data
 
 fclean: clean
 		docker system prune -a --force
-soft_re: clean all
-re: fclean all
 
-.PHONY: all build up down clean fclean re setup
+
+re: clean all
+
+strong_re: fclean all
+
+.PHONY: all build up down clean fclean re setup strong_re inspect ps bash

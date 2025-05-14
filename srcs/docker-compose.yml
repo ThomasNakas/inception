@@ -5,16 +5,16 @@ services:
     build: requirements/nginx/.
     container_name: nginx
     ports:
-    - "443:443"
+    - "${NGINX_PORT}:${NGINX_PORT}"
     networks:
     - inception
     volumes:
     - wordpress_data:/var/www/html
   wordpress:
    build: requirements/wordpress/.
-   container_name: wp-php
+   container_name: wordpress
    expose:
-    - "9000"
+    - "${WORDPRESS_PORT}"
    environment:
     WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
     WORDPRESS_DB_PORT: ${WORDPRESS_DB_PORT}
@@ -24,8 +24,12 @@ services:
     WORDPRESS_WEBSITE: ${WORDPRESS_WEBSITE}
     WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
     WORDPRESS_DB_PASSWORD_FILE: /run/secrets/wordpress_db_password
+    WORDPRESS_ADMIN_PASSWORD_FILE: /run/secrets/wordpress_admin_password
+    WORDPRESS_USER_PASSWORD_FILE: /run/secrets/wordpress_user_password
    secrets:
     - wordpress_db_password
+    - wordpress_admin_password
+    - wordpress_user_password
    healthcheck:
       test: curl -f "${WORDPRESS_WEBSITE}:9000" || exit 1
       interval: 10s
@@ -38,7 +42,6 @@ services:
   mariadb:
    build: requirements/mariadb/.
    container_name: mariadb
-#    image: mariadb:10.5
    environment:
     MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql_root_password
     MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -58,6 +61,10 @@ secrets:
    file: ../secrets/mysql_root_password.txt
   wordpress_db_password:
    file: ../secrets/wordpress_db_password.txt
+  wordpress_admin_password:
+   file: ../secrets/wordpress_admin_password.txt
+  wordpress_user_password:
+   file: ../secrets/wordpress_user_password.txt
 networks:
   inception:
     name: inception
@@ -69,16 +76,11 @@ volumes:
     driver_opts:
      type: none
      o: bind
-     device: /home/tnakas/data/mariadb
+     device: /home/${LOGIN}/data/mariadb
   wordpress_data:
     name: wordpress
     driver: local
     driver_opts:
      type: none
      o: bind
-     device: /home/tnakas/data/wordpress
-
-# database_name: wp_db
-# username: wp_root_user
-# password: L3@rner
-# database_host: db
+     device: /home/${LOGIN}/data/wordpress

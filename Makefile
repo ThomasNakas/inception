@@ -1,8 +1,11 @@
 NAME = inception
-
+#==========VARIABLES======================
 LOGIN = tnakas
-COMPOSE_PATH = srcs/docker-compose.yml
+COMPOSE_PATH = ./srcs/docker-compose.yml
+DOCKER = docker compose -f ${COMPOSE_PATH}
 SERVICE = mariadb
+VOLUME = mariadb
+#==========COMPILING ACTIONS==============
 all: setup build up
 
 setup:
@@ -11,33 +14,33 @@ setup:
 		@mkdir -p /home/${LOGIN}/data/wordpress
 
 build:
-	docker compose -f ${COMPOSE_PATH} build
+	${DOCKER} build
 
 up:
-	docker compose -f ${COMPOSE_PATH} up --detach
+	${DOCKER} up --detach
 
 down:
-	docker compose -f ${COMPOSE_PATH} down
-
-inspect:
-	docker compose  -f ${COMPOSE_PATH} logs
-
-ps:
-	docker compose  -f ${COMPOSE_PATH} ps
-
-bash: 
-	docker compose -f ${COMPOSE_PATH} exec  -it ${SERVICE} bash
+	${DOCKER} down
 
 clean:
-	docker compose -f ${COMPOSE_PATH} down -v
+	${DOCKER} down -v
 	-rm -rf /home/tnakas/data
 
 fclean: clean
 		docker system prune -a --force
 
-
 re: clean all
 
 strong_re: fclean all
+#==========MONITORING ACTIONS=============
+#----------services && volumes------------
+logs:
+	docker compose  -f ${COMPOSE_PATH} logs
 
-.PHONY: all build up down clean fclean re setup strong_re inspect ps bash
+ps:
+	docker compose  -f ${COMPOSE_PATH} ps
+#----------bash---------------------------
+bash: 
+	${DOCKER} exec  -it ${SERVICE} bash
+#==========PHONY==========================
+.PHONY: all setup build up down clean fclean re strong_re logs ps bash
